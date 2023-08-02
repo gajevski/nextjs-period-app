@@ -1,6 +1,6 @@
 module.exports = {
   content: ['./pages/**/*.{js,ts,jsx,tsx,mdx}'],
-  plugins: [require('daisyui')],
+  plugins: [require("@tailwindcss/typography"), require('daisyui')],
   daisyui: {
     themes: ["fantasy"],
   },
