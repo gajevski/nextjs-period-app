@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.plus-button {
+  position: absolute;
+  bottom: 80px;
+  right: 26px;
+}
