@@ -1,21 +1,10 @@
 import Link from "next/link";
 
-export async function getServerSideProps() {
-  const response = await fetch("http://localhost:3001/");
-  const data = await response.json();
 
-  return {
-    props: {
-      data,
-    },
-  };
-}
-
-export default function CurrentPeriod({ data }) {
+export default function CurrentPeriod() {
   return (
     <div>
       <article className="prose lg:prose-xl">
-        <h1>Backend connection: {data?.info}</h1>
         <h1 className="px-5 py-2">Najbliższy okres</h1>
         <h2 className="px-5 py-2">Następny okres za:</h2>
         <div className="px-5 flex gap-5">
