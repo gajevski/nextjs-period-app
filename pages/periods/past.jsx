@@ -11,13 +11,27 @@ export async function getServerSideProps() {
   };
 }
 
+const addPeriod = async () => {
+  console.log("clicked");
+  const response = await fetch("http://localhost:3001/add-period", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: 3, description: "Period four" }),
+  });
+};
+
 export default function PastPeriods({ periods }) {
   return (
     <div>
       <article className="prose lg:prose-xl">
         <h1 className="px-5 py-2">Poprzednie okresy</h1>
       </article>
-      <button className="plus-button btn btn-circle btn-error">
+      <button
+        className="plus-button btn btn-circle btn-error"
+        onClick={addPeriod}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"
@@ -81,3 +95,4 @@ export default function PastPeriods({ periods }) {
     </div>
   );
 }
+  
