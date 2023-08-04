@@ -31,7 +31,7 @@ export default function PastPeriods({ periods }) {
       </button>
 
       {periods.periods.map((period) => (
-        <div className="p-3 collapse">
+        <div className="p-3 collapse" key={period.id}>
           <input type="checkbox" className="peer" />
           <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
             Click me to show/hide content
