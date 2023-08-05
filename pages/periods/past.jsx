@@ -12,13 +12,22 @@ export async function getServerSideProps() {
 }
 
 const addPeriod = async () => {
-  console.log("clicked");
-  const response = await fetch("http://localhost:3001/add-period", {
+  await fetch("http://localhost:3001/add-period", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ id: 3, description: "Period four" }),
+  });
+};
+
+const deletePeriod = async (id) => {
+  await fetch("http://localhost:3001/delete-period", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: id}),
   });
 };
 
@@ -52,6 +61,22 @@ export default function PastPeriods({ periods }) {
           </div>
           <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
             <p>{period.description}</p>
+            <button className="btn btn-square btn-outline" onClick={() => deletePeriod(period.id)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       ))}
@@ -95,4 +120,3 @@ export default function PastPeriods({ periods }) {
     </div>
   );
 }
-  
