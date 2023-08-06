@@ -31,6 +31,16 @@ const deletePeriod = async (id) => {
   });
 };
 
+const editPeriod = async (id) => {
+  await fetch("http://localhost:3001/edit-period", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: id, description: `Eddited period number ${id + 1}`}),
+  });
+};
+
 export default function PastPeriods({ periods }) {
   return (
     <div>
@@ -77,6 +87,7 @@ export default function PastPeriods({ periods }) {
                 />
               </svg>
             </button>
+            <button className="btn btn-accent" onClick={() => editPeriod(period.id)}>Edit</button>
           </div>
         </div>
       ))}
