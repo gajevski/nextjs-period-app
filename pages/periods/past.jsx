@@ -66,8 +66,8 @@ export default function PastPeriods({ periods }) {
         </svg>
       </button>
 
-      {periods.periods.map((period) => (
-        <div className="p-3 collapse z-1" key={period.id}>
+      {periods.periods.map((period, index) => (
+        <div className={`p-3 collapse z-1 ${index === periods.periods.length - 1 ? 'mb-20' : ''}`} key={period.id}>
           <input type="checkbox" className="peer" />
           <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
             Click me to show/hide content
