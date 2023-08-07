@@ -51,7 +51,7 @@ export default function PastPeriods({ periods }) {
         <h1 className="px-5 py-2">Poprzednie okresy</h1>
       </article>
       <button
-        className="plus-button btn btn-circle btn-error"
+        className="plus-button btn btn-circle btn-error z-10 fixed bottom-24 right-4"
         onClick={() => window.my_modal_1.showModal()}
       >
         <svg
@@ -67,7 +67,7 @@ export default function PastPeriods({ periods }) {
       </button>
 
       {periods.periods.map((period) => (
-        <div className="p-3 collapse" key={period.id}>
+        <div className="p-3 collapse z-1" key={period.id}>
           <input type="checkbox" className="peer" />
           <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
             Click me to show/hide content
