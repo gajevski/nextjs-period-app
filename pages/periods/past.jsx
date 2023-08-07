@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export async function getServerSideProps() {
-  const response = await fetch("http://localhost:3001/all-periods");
+  const response = await fetch("http://localhost:3001/periods/all-periods");
   const periods = await response.json();
 
   return {
@@ -12,7 +12,7 @@ export async function getServerSideProps() {
 }
 
 const addPeriod = async () => {
-  await fetch("http://localhost:3001/add-period", {
+  await fetch("http://localhost:3001/periods/add-period", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -22,7 +22,7 @@ const addPeriod = async () => {
 };
 
 const deletePeriod = async (id) => {
-  await fetch("http://localhost:3001/delete-period", {
+  await fetch("http://localhost:3001/periods/delete-period", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
