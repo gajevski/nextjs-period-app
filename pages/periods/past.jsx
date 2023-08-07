@@ -32,7 +32,7 @@ const deletePeriod = async (id) => {
 };
 
 const editPeriod = async (id) => {
-  await fetch("http://localhost:3001/edit-period", {
+  await fetch("http://localhost:3001/periods/edit-period", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
