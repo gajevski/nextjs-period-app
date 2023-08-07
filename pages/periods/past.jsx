@@ -27,7 +27,7 @@ const deletePeriod = async (id) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id: id}),
+    body: JSON.stringify({ id: id }),
   });
 };
 
@@ -37,7 +37,10 @@ const editPeriod = async (id) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id: id, description: `Eddited period number ${id + 1}`}),
+    body: JSON.stringify({
+      id: id,
+      description: `Eddited period number ${id + 1}`,
+    }),
   });
 };
 
@@ -49,7 +52,7 @@ export default function PastPeriods({ periods }) {
       </article>
       <button
         className="plus-button btn btn-circle btn-error"
-        onClick={addPeriod}
+        onClick={() => window.my_modal_1.showModal()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -69,25 +72,49 @@ export default function PastPeriods({ periods }) {
           <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
             Click me to show/hide content
           </div>
-          <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
+          <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content peer-checked:p-4 flex justify-between">
             <p>{period.description}</p>
-            <button className="btn btn-square btn-outline" onClick={() => deletePeriod(period.id)}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <div className="flex">
+              <button
+                className="btn btn-accent mr-2"
+                onClick={() => editPeriod(period.id)}
               >
-                <path
+                <svg
+                  className="feather feather-edit"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <button className="btn btn-accent" onClick={() => editPeriod(period.id)}>Edit</button>
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+              </button>
+              <button
+                className="btn btn-square btn-outline"
+                onClick={() => deletePeriod(period.id)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       ))}
@@ -128,6 +155,18 @@ export default function PastPeriods({ periods }) {
           </svg>
         </button>
       </div>
+      <dialog id="my_modal_1" className="modal">
+        <form method="dialog" className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">
+            Press ESC key or click the button below to close
+          </p>
+          <div className="modal-action">
+            <button className="btn btn-outline">Zamknij</button>
+            <button className="btn btn-info" onClick={addPeriod}>Dodaj</button>
+          </div>
+        </form>
+      </dialog>
     </div>
   );
 }
