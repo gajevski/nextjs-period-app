@@ -67,7 +67,12 @@ export default function PastPeriods({ periods }) {
       </button>
 
       {periods.periods.map((period, index) => (
-        <div className={`p-3 collapse z-1 ${index === periods.periods.length - 1 ? 'mb-20' : ''}`} key={period.id}>
+        <div
+          className={`p-3 collapse z-1 ${
+            index === periods.periods.length - 1 ? "mb-20" : ""
+          }`}
+          key={period.id}
+        >
           <input type="checkbox" className="peer" />
           <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
             Click me to show/hide content
@@ -157,13 +162,28 @@ export default function PastPeriods({ periods }) {
       </div>
       <dialog id="my_modal_1" className="modal">
         <form method="dialog" className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <p className="py-4">
-            Press ESC key or click the button below to close
-          </p>
+          <h3 className="font-bold text-lg mb-6">Dodaj okres</h3>
+          <div class="mb-4">
+            <span className="label-text">Data rozpoczęcia</span>
+            <input
+              type="date"
+              placeholder="Wpisz tutaj..."
+              className="input input-bordered w-full max-w-xs"
+            />
+          </div>
+          <div>
+            <span className="label-text">Opis</span>
+            <input
+              type="text"
+              placeholder="Wpisz tutaj..."
+              className="input input-bordered w-full max-w-xs"
+            />
+          </div>
           <div className="modal-action">
             <button className="btn btn-outline">Zamknij</button>
-            <button className="btn btn-info" onClick={addPeriod}>Dodaj</button>
+            <button className="btn btn-info" onClick={addPeriod}>
+              Dodaj
+            </button>
           </div>
         </form>
       </dialog>
