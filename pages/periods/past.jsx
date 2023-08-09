@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export async function getServerSideProps() {
   const response = await fetch("http://localhost:3001/periods/all-periods");
@@ -12,30 +12,15 @@ export async function getServerSideProps() {
   };
 }
 
-const deletePeriod = async (id) => {
-  await fetch("http://localhost:3001/periods/delete-period", {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id: id }),
-  });
-};
-
-const editPeriod = async (id) => {
-  await fetch("http://localhost:3001/periods/edit-period", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id: id,
-      description: `Eddited period number ${id + 1}`,
-    }),
-  });
-};
-
 export default function PastPeriods({ periods }) {
+  const [startDate, setStartDate] = useState("");
+  const [description, setDescription] = useState("");
+  const [currentPeriods, setCurrentPeriods] = useState(periods.periods);
+
+  useEffect(() => {
+    setCurrentPeriods(periods.periods);
+  }, [periods]);
+
   const addPeriod = async () => {
     await fetch("http://localhost:3001/periods/add-period", {
       method: "POST",
@@ -47,10 +32,51 @@ export default function PastPeriods({ periods }) {
 
     setStartDate("");
     setDescription("");
+
+    // Fetch the updated list of periods after adding a new period
+    const response = await fetch("http://localhost:3001/periods/all-periods");
+    const updatedPeriods = await response.json();
+    setCurrentPeriods(updatedPeriods.periods);
   };
 
-  const [startDate, setStartDate] = useState("");
-  const [description, setDescription] = useState("");
+  const deletePeriod = async (id) => {
+    await fetch("http://localhost:3001/periods/delete-period", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    });
+
+    setStartDate("");
+    setDescription("");
+
+    // Fetch the updated list of periods after adding a new period
+    const response = await fetch("http://localhost:3001/periods/all-periods");
+    const updatedPeriods = await response.json();
+    setCurrentPeriods(updatedPeriods.periods);
+  };
+
+  const editPeriod = async (id) => {
+    await fetch("http://localhost:3001/periods/edit-period", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        description: `Eddited period number ${id + 1}`,
+      }),
+    });
+
+    setStartDate("");
+    setDescription("");
+
+    // Fetch the updated list of periods after adding a new period
+    const response = await fetch("http://localhost:3001/periods/all-periods");
+    const updatedPeriods = await response.json();
+    setCurrentPeriods(updatedPeriods.periods);
+  };
 
   return (
     <div>
@@ -73,7 +99,7 @@ export default function PastPeriods({ periods }) {
         </svg>
       </button>
 
-      {periods.periods.map((period, index) => (
+      {currentPeriods.map((period, index) => (
         <div
           className={`p-3 collapse z-1 ${
             index === periods.periods.length - 1 ? "mb-20" : ""
