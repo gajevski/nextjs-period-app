@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useState } from "react";
 
 export async function getServerSideProps() {
   const response = await fetch("http://localhost:3001/periods/all-periods");
@@ -10,16 +11,6 @@ export async function getServerSideProps() {
     },
   };
 }
-
-const addPeriod = async () => {
-  await fetch("http://localhost:3001/periods/add-period", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ id: 3, description: "Period four" }),
-  });
-};
 
 const deletePeriod = async (id) => {
   await fetch("http://localhost:3001/periods/delete-period", {
@@ -45,6 +36,22 @@ const editPeriod = async (id) => {
 };
 
 export default function PastPeriods({ periods }) {
+  const addPeriod = async () => {
+    await fetch("http://localhost:3001/periods/add-period", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ startDate, description }),
+    });
+
+    setStartDate("");
+    setDescription("");
+  };
+
+  const [startDate, setStartDate] = useState("");
+  const [description, setDescription] = useState("");
+
   return (
     <div>
       <article className="prose lg:prose-xl">
@@ -169,6 +176,8 @@ export default function PastPeriods({ periods }) {
               type="date"
               placeholder="Wpisz tutaj..."
               className="input input-bordered w-full max-w-xs"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
             />
           </div>
           <div>
@@ -177,6 +186,8 @@ export default function PastPeriods({ periods }) {
               type="text"
               placeholder="Wpisz tutaj..."
               className="input input-bordered w-full max-w-xs"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div className="modal-action">
