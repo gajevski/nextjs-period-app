@@ -16,6 +16,7 @@ export default function PastPeriods({ periods }) {
   const [startDate, setStartDate] = useState("");
   const [description, setDescription] = useState("");
   const [currentPeriods, setCurrentPeriods] = useState(periods.periods);
+  const [selectedPeriodId, setSelectedPeriodId] = useState(null);
 
   useEffect(() => {
     setCurrentPeriods(periods.periods);
@@ -65,7 +66,8 @@ export default function PastPeriods({ periods }) {
       },
       body: JSON.stringify({
         id: id,
-        description: `Eddited period number ${id + 1}`,
+        startDate,
+        description,
       }),
     });
 
@@ -85,7 +87,7 @@ export default function PastPeriods({ periods }) {
       </article>
       <button
         className="plus-button btn btn-circle btn-error z-10 fixed bottom-24 right-4"
-        onClick={() => window.my_modal_1.showModal()}
+        onClick={() => window.add_modal.showModal()}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -101,9 +103,8 @@ export default function PastPeriods({ periods }) {
 
       {currentPeriods.map((period, index) => (
         <div
-          className={`p-3 collapse z-1 ${
-            index === periods.periods.length - 1 ? "mb-20" : ""
-          }`}
+          className={`p-3 collapse z-1 ${index === periods.periods.length - 1 ? "mb-20" : ""
+            }`}
           key={period.id}
         >
           <input type="checkbox" className="peer" />
@@ -111,11 +112,17 @@ export default function PastPeriods({ periods }) {
             Click me to show/hide content
           </div>
           <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content peer-checked:p-4 flex justify-between">
-            <p>{period.description}</p>
+            <div className="flex flex-col items-start justify-between">
+              <p>{period.startDate}</p>
+              <p>{period.description}</p>
+            </div>
             <div className="flex">
               <button
                 className="btn btn-accent mr-2"
-                onClick={() => editPeriod(period.id)}
+                onClick={() => {
+                  setSelectedPeriodId(period.id);
+                  window.edit_modal.showModal();
+                }}
               >
                 <svg
                   className="feather feather-edit"
@@ -193,10 +200,11 @@ export default function PastPeriods({ periods }) {
           </svg>
         </button>
       </div>
-      <dialog id="my_modal_1" className="modal">
+
+      <dialog id="add_modal" className="modal">
         <form method="dialog" className="modal-box">
           <h3 className="font-bold text-lg mb-6">Dodaj okres</h3>
-          <div class="mb-4">
+          <div className="mb-4">
             <span className="label-text">Data rozpoczęcia</span>
             <input
               type="date"
@@ -220,6 +228,38 @@ export default function PastPeriods({ periods }) {
             <button className="btn btn-outline">Zamknij</button>
             <button className="btn btn-info" onClick={addPeriod}>
               Dodaj
+            </button>
+          </div>
+        </form>
+      </dialog>
+
+      <dialog id="edit_modal" className="modal">
+        <form method="dialog" className="modal-box">
+          <h3 className="font-bold text-lg mb-6">Edytuj okres</h3>
+          <div className="mb-4">
+            <span className="label-text">Data rozpoczęcia</span>
+            <input
+              type="date"
+              placeholder="Wpisz tutaj..."
+              className="input input-bordered w-full max-w-xs"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+          <div>
+            <span className="label-text">Opis</span>
+            <input
+              type="text"
+              placeholder="Wpisz tutaj..."
+              className="input input-bordered w-full max-w-xs"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="modal-action">
+            <button className="btn btn-outline">Zamknij</button>
+            <button className="btn btn-info" onClick={() => editPeriod(selectedPeriodId)}>
+              Edytuj
             </button>
           </div>
         </form>
