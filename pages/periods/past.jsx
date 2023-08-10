@@ -109,7 +109,7 @@ export default function PastPeriods({ periods }) {
         >
           <input type="checkbox" className="peer" />
           <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
-            Click me to show/hide content
+            {period.startDate}
           </div>
           <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content peer-checked:p-4 flex justify-between">
             <div className="flex flex-col items-start justify-between">
