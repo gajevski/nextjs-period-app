@@ -16,27 +16,8 @@ export default function CurrentPeriod({ nextPeriod }) {
     <div>
       <article className="prose lg:prose-xl">
         <h1 className="px-5 py-2">Najbliższy okres</h1>
-        <h2 className="px-5 py-2">Następny okres za: {nextPeriod.nextPeriod[0].startDate}</h2>
-        <div className="px-5 flex gap-5">
-          <div>
-            <span className="countdown font-mono text-4xl">
-              <span style={{ "--value": 14 }}></span>
-            </span>
-            dni
-          </div>
-          <div>
-            <span className="countdown font-mono text-4xl">
-              <span style={{ "--value": 10 }}></span>
-            </span>
-            godziny
-          </div>
-          <div>
-            <span className="countdown font-mono text-4xl">
-              <span style={{ "--value": 24 }}></span>
-            </span>
-            minuty
-          </div>
-        </div>
+        <h2 className="px-5 py-2">Ostatni okres wypadł: {nextPeriod?.lastPeriod.startDate}</h2>
+        <h2 className="px-5 py-2">Następny okres wypada: {nextPeriod?.nextPeriod.startDate}</h2>
       </article>
       <div className="btm-nav">
         <button className="text-error active">
