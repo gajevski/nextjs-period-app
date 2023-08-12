@@ -12,12 +12,19 @@ export async function getServerSideProps() {
 }
 
 export default function CurrentPeriod({ nextPeriod }) {
+  const lastStartDate = nextPeriod?.lastPeriod.startDate;
+  const nextStartDate = nextPeriod?.nextPeriod.startDate;
+
   return (
     <div>
       <article className="prose lg:prose-xl">
         <h1 className="px-5 py-2">Najbliższy okres</h1>
-        <h2 className="px-5 py-2">Ostatni okres wypadł: {nextPeriod?.lastPeriod.startDate}</h2>
-        <h2 className="px-5 py-2">Następny okres wypada: {nextPeriod?.nextPeriod.startDate}</h2>
+        {lastStartDate && (
+          <h2 className="px-5 py-2">Ostatni okres wypadł: {lastStartDate}</h2>
+        )}
+        {nextStartDate && (
+          <h2 className="px-5 py-2">Następny okres wypada: {nextStartDate}</h2>
+        )}
       </article>
       <div className="btm-nav">
         <button className="text-error active">

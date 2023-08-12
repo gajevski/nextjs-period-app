@@ -1,10 +1,19 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export async function getServerSideProps() {
+async function fetchPeriods() {
   const response = await fetch("http://localhost:3001/periods/all-periods");
   const periods = await response.json();
+  return periods;
+}
 
+async function updatePeriods(setPeriods) {
+  const periods = await fetchPeriods();
+  setPeriods(periods.periods);
+}
+
+export async function getServerSideProps() {
+  const periods = await fetchPeriods();
   return {
     props: {
       periods,
@@ -22,7 +31,7 @@ export default function PastPeriods({ periods }) {
     setCurrentPeriods(periods.periods);
   }, [periods]);
 
-  const addPeriod = async () => {
+  const handleAddPeriod = async () => {
     await fetch("http://localhost:3001/periods/add-period", {
       method: "POST",
       headers: {
@@ -33,14 +42,10 @@ export default function PastPeriods({ periods }) {
 
     setStartDate("");
     setDescription("");
-
-    // Fetch the updated list of periods after adding a new period
-    const response = await fetch("http://localhost:3001/periods/all-periods");
-    const updatedPeriods = await response.json();
-    setCurrentPeriods(updatedPeriods.periods);
+    updatePeriods(setCurrentPeriods);
   };
 
-  const deletePeriod = async (id) => {
+  const handleDeletePeriod = async (id) => {
     await fetch("http://localhost:3001/periods/delete-period", {
       method: "DELETE",
       headers: {
@@ -51,14 +56,10 @@ export default function PastPeriods({ periods }) {
 
     setStartDate("");
     setDescription("");
-
-    // Fetch the updated list of periods after adding a new period
-    const response = await fetch("http://localhost:3001/periods/all-periods");
-    const updatedPeriods = await response.json();
-    setCurrentPeriods(updatedPeriods.periods);
+    updatePeriods(setCurrentPeriods);
   };
 
-  const editPeriod = async (id) => {
+  const handleEditPeriod = async (id) => {
     await fetch("http://localhost:3001/periods/edit-period", {
       method: "PUT",
       headers: {
@@ -73,11 +74,7 @@ export default function PastPeriods({ periods }) {
 
     setStartDate("");
     setDescription("");
-
-    // Fetch the updated list of periods after adding a new period
-    const response = await fetch("http://localhost:3001/periods/all-periods");
-    const updatedPeriods = await response.json();
-    setCurrentPeriods(updatedPeriods.periods);
+    updatePeriods(setCurrentPeriods);
   };
 
   return (
@@ -142,7 +139,7 @@ export default function PastPeriods({ periods }) {
               </button>
               <button
                 className="btn btn-square btn-outline"
-                onClick={() => deletePeriod(period.id)}
+                onClick={() => handleDeletePeriod(period.id)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +223,7 @@ export default function PastPeriods({ periods }) {
           </div>
           <div className="modal-action">
             <button className="btn btn-outline">Zamknij</button>
-            <button className="btn btn-info" onClick={addPeriod}>
+            <button className="btn btn-info" onClick={handleAddPeriod}>
               Dodaj
             </button>
           </div>
@@ -258,7 +255,7 @@ export default function PastPeriods({ periods }) {
           </div>
           <div className="modal-action">
             <button className="btn btn-outline">Zamknij</button>
-            <button className="btn btn-info" onClick={() => editPeriod(selectedPeriodId)}>
+            <button className="btn btn-info" onClick={() => handleEditPeriod(selectedPeriodId)}>
               Edytuj
             </button>
           </div>
