@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Login() {
 
     return (
@@ -77,10 +79,14 @@ export default function Login() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <p className="text-sm text-gray-500">
-                        Nie masz konta?
-                        <a className="underline" href="">Zarejestruj się</a>
-                    </p>
+                    <div class="flex gap-1">
+                        <p className="text-sm text-gray-500">
+                            Nie masz konta?
+                        </p>
+                        <Link href="/auth/register" className="text-sm text-gray-500 underline">
+                            Zarejestruj się
+                        </Link>
+                    </div>
 
                     <button
                         type="submit"
