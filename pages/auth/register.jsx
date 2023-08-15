@@ -79,7 +79,7 @@ export default function Register() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <div class="flex gap-1">
+                    <div className="flex gap-1">
                         <p className="text-sm text-gray-500">
                             Masz konto?
                         </p>
