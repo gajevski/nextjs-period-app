@@ -1,6 +1,31 @@
+import { useState } from "react"; // Import the useState hook
 import Link from "next/link";
 
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("http://localhost:3001/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (response.ok) {
+                console.log('Logged in!');
+            } else {
+                console.log('Login error!')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -13,13 +38,15 @@ export default function Login() {
                 </p>
             </div>
 
-            <form action="" className="mx-auto mb-0 mt-8 max-w-md space-y-4">
+            <form onSubmit={handleSubmit} className="mx-auto mb-0 mt-8 max-w-md space-y-4">
                 <div>
                     <label htmlFor="email" className="sr-only">Email</label>
 
                     <div className="relative">
-                        <input
+                    <input
                             type="email"
+                            value={email} // Connect input value to state
+                            onChange={(e) => setEmail(e.target.value)} // Update state as user types
                             className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                             placeholder="Wprowadź email"
                         />
@@ -47,8 +74,10 @@ export default function Login() {
                     <label htmlFor="password" className="sr-only">Hasło</label>
 
                     <div className="relative">
-                        <input
+                    <input
                             type="password"
+                            value={password} // Connect input value to state
+                            onChange={(e) => setPassword(e.target.value)} // Update state as user types
                             className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
                             placeholder="Wprowadź hasło"
                         />
@@ -79,7 +108,7 @@ export default function Login() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <div class="flex gap-1">
+                    <div className="flex gap-1">
                         <p className="text-sm text-gray-500">
                             Nie masz konta?
                         </p>
