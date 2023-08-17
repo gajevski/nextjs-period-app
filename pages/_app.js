@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }) {
     <Head>
       <title>Periodyk 🧛‍♀️</title>
     </Head>
-    <Component {...pageProps} />;
+    <Component {...pageProps} />
   </>
   )
 }
