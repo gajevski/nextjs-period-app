@@ -1,4 +1,7 @@
 import Link from "next/link";
+import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 export async function getServerSideProps() {
   const response = await fetch("http://localhost:3001/next-period");
@@ -12,19 +15,34 @@ export async function getServerSideProps() {
 }
 
 export default function CurrentPeriod({ nextPeriod }) {
-  const lastStartDate = nextPeriod?.lastPeriod.startDate;
-  const nextStartDate = nextPeriod?.nextPeriod.startDate;
+  const lastStartDate = new Date(nextPeriod?.lastPeriod.startDate);
+  const nextStartDate = new Date(nextPeriod?.nextPeriod.startDate);
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+
+  const [selectedDate, setSelectedDate] = useState(nextStartDate);
 
   return (
     <div>
       <article className="prose lg:prose-xl">
         <h1 className="px-5 py-2">Najbliższy okres</h1>
+        <h2 className="px-5">Ostatni okres wypadł:</h2>
         {lastStartDate && (
-          <h2 className="px-5 py-2">Ostatni okres wypadł: {lastStartDate}</h2>
+          <h2 className="px-5">{lastStartDate.toLocaleDateString(undefined, options)}</h2>
         )}
+        <h2 className="px-5 mt-16">Następny okres wypada:</h2>
         {nextStartDate && (
-          <h2 className="px-5 py-2">Następny okres wypada: {nextStartDate}</h2>
+          <h2 className="px-5">{nextStartDate.toLocaleDateString(undefined, options)}</h2>
         )}
+        <DatePicker
+          selected={nextStartDate}
+          onChange={(date) => setSelectedDate(date)}
+          highlightDates={[nextStartDate]}
+        />
       </article>
       <div className="btm-nav">
         <button className="text-error active">
