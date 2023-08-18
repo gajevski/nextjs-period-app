@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { pl } from 'date-fns/locale'; // Import the Polish locale
 
 export async function getServerSideProps() {
   const response = await fetch("http://localhost:3001/next-period");
@@ -36,13 +37,16 @@ export default function CurrentPeriod({ nextPeriod }) {
         )}
         <h2 className="px-5 mt-16">Następny okres wypada:</h2>
         {nextStartDate && (
-          <h2 className="px-5">{nextStartDate.toLocaleDateString(undefined, options)}</h2>
-        )}
+        <h2 className="px-5">
         <DatePicker
           selected={nextStartDate}
           onChange={(date) => setSelectedDate(date)}
           highlightDates={[nextStartDate]}
-        />
+          dateFormat="EEEE, MMMM d, yyyy"
+          locale={pl}
+          />
+          </h2>
+        )}
       </article>
       <div className="btm-nav">
         <button className="text-error active">
