@@ -1,7 +1,12 @@
-import CurrentPeriod from "./periods/current";
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Home() {
-  return (
-        <CurrentPeriod />
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/periods/current');
+  }, []);
+
+  return null;
 }
