@@ -1,24 +1,10 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-async function fetchPeriods() {
-  const response = await fetch("http://localhost:3001/periods/all-periods");
-  const periods = await response.json();
-  return periods;
-}
 
 async function updatePeriods(setPeriods) {
-  const periods = await fetchPeriods();
+  const periods = await setPeriods();
   setPeriods(periods.periods);
-}
-
-export async function getServerSideProps() {
-  const periods = await fetchPeriods();
-  return {
-    props: {
-      periods,
-    },
-  };
 }
 
 export default function PastPeriods() {
