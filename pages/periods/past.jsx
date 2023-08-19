@@ -21,15 +21,18 @@ export async function getServerSideProps() {
   };
 }
 
-export default function PastPeriods({ periods }) {
+export default function PastPeriods() {
   const [startDate, setStartDate] = useState("");
   const [description, setDescription] = useState("");
-  const [currentPeriods, setCurrentPeriods] = useState(periods.periods);
+  const [periods, setPeriods] = useState([]);
   const [selectedPeriodId, setSelectedPeriodId] = useState(null);
 
   useEffect(() => {
-    setCurrentPeriods(periods.periods);
-  }, [periods]);
+    fetch('/api/periods/all-periods')
+      .then(response => response.json())
+      .then(data => setPeriods(data.periods))
+      .catch(error => console.error('Error fetching periods:', error));
+  }, []);
 
   const handleAddPeriod = async () => {
     await fetch("http://localhost:3001/periods/add-period", {
@@ -42,7 +45,7 @@ export default function PastPeriods({ periods }) {
 
     setStartDate("");
     setDescription("");
-    updatePeriods(setCurrentPeriods);
+    updatePeriods(setPeriods);
   };
 
   const handleDeletePeriod = async (id) => {
@@ -56,7 +59,7 @@ export default function PastPeriods({ periods }) {
 
     setStartDate("");
     setDescription("");
-    updatePeriods(setCurrentPeriods);
+    updatePeriods(setPeriods);
   };
 
   const handleEditPeriod = async (id) => {
@@ -74,7 +77,7 @@ export default function PastPeriods({ periods }) {
 
     setStartDate("");
     setDescription("");
-    updatePeriods(setCurrentPeriods);
+    updatePeriods(setPeriods);
   };
 
   return (
@@ -98,9 +101,9 @@ export default function PastPeriods({ periods }) {
         </svg>
       </button>
 
-      {currentPeriods.map((period, index) => (
+      {periods.map((period, index) => (
         <div
-          className={`p-3 collapse z-1 ${index === periods.periods.length - 1 ? "mb-20" : ""
+          className={`p-3 collapse z-1 ${index === periods.length - 1 ? "mb-20" : ""
             }`}
           key={period.id}
         >
