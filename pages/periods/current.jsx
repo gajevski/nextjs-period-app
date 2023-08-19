@@ -1,23 +1,12 @@
 import Link from "next/link";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
+import { pl } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
-import { pl } from 'date-fns/locale'; // Import the Polish locale
 
-export async function getServerSideProps() {
-  const response = await fetch("http://localhost:3001/next-period");
-  const nextPeriod = await response.json();
-
-  return {
-    props: {
-      nextPeriod,
-    },
-  };
-}
-
-export default function CurrentPeriod({ nextPeriod }) {
-  const lastStartDate = new Date(nextPeriod?.lastPeriod.startDate);
-  const nextStartDate = new Date(nextPeriod?.nextPeriod.startDate);
+export default function CurrentPeriod() {
+  const [periods, setPeriods] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
   const options = {
     weekday: 'long',
     year: 'numeric',
@@ -25,7 +14,18 @@ export default function CurrentPeriod({ nextPeriod }) {
     day: 'numeric',
   };
 
-  const [selectedDate, setSelectedDate] = useState(nextStartDate);
+  useEffect(() => {
+    fetch('/api/periods/all-periods')
+      .then(response => response.json())
+      .then(data => setPeriods(data.periods))
+      .catch(error => console.error('Error fetching periods:', error));
+  }, []);
+
+  const lastPeriod = periods.find(period => period.id === 0);
+  const nextPeriod = periods.find(period => period.id === 1);
+
+  const lastStartDate = lastPeriod ? new Date(lastPeriod.startDate) : null;
+  const nextStartDate = nextPeriod ? new Date(nextPeriod.startDate) : null;
 
   return (
     <div>
@@ -37,14 +37,14 @@ export default function CurrentPeriod({ nextPeriod }) {
         )}
         <h2 className="px-5 mt-16">Następny okres wypada:</h2>
         {nextStartDate && (
-        <h2 className="px-5">
-        <DatePicker
-          selected={nextStartDate}
-          onChange={(date) => setSelectedDate(date)}
-          highlightDates={[nextStartDate]}
-          dateFormat="EEEE, MMMM d, yyyy"
-          locale={pl}
-          />
+          <h2 className="px-5">
+            <DatePicker
+              selected={selectedDate || nextStartDate}
+              onChange={(date) => setSelectedDate(date)}
+              highlightDates={[nextStartDate]}
+              dateFormat="EEEE, MMMM d, yyyy"
+              locale={pl}
+            />
           </h2>
         )}
       </article>
