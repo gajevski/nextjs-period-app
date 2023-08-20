@@ -1,10 +1,10 @@
 {
-    "theme_color": "#f69435",
-    "background_color": "#f69435",
+    "theme_color": "#fff",
+    "background_color": "#fff",
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
-    "name": "Periodyk \ud83e\udddb\u200d\u2640\ufe0f",
+    "name": "Periodyk",
     "short_name": "Periodyk",
     "description": "Periodyk Application",
     "icons": [
