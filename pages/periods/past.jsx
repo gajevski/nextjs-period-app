@@ -78,6 +78,31 @@ export default function PastPeriods() {
               </button>
               <button
                 className="btn btn-square btn-outline"
+                onClick={async () => {
+                  if (window.confirm("Na pewno chcesz usunąć ten okres?")) {
+                    try {
+                      const response = await fetch('/api/periods/remove-period', {
+                        method: 'DELETE',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                          id: period.id
+                        })
+                      });
+
+                      if (response.ok) {
+                        const dataResponse = await fetch('/api/periods/all-periods');
+                        const data = await dataResponse.json();
+                        setPeriods(data.periods);
+                      } else {
+                        // Handle error response
+                      }
+                    } catch (error) {
+                      // Handle fetch error
+                    }
+                  }
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
