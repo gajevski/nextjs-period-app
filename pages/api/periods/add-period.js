@@ -7,7 +7,6 @@ function generateRandomId() {
 export default function handler(req, res) {
   const { startDate, description } = req.body;
 
-  // Generate a unique ID for the new period
   const newPeriodId = generateRandomId();
 
   const newPeriod = {

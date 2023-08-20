@@ -96,10 +96,10 @@ export default function PastPeriods() {
                         const data = await dataResponse.json();
                         setPeriods(data.periods);
                       } else {
-                        // Handle error response
+                        console.error(response.error)
                       }
                     } catch (error) {
-                      // Handle fetch error
+                      console.error(error);
                     }
                   }
                 }}
@@ -185,10 +185,9 @@ export default function PastPeriods() {
               Zamknij
             </button>
             <button
-              type="button"  // Set the button type to "button"
+              type="button"
               className="btn btn-info"
               onClick={async () => {
-                // Get the input values from the form
                 const startDate = document.querySelector('#add_modal [name="startDate"]').value;
                 const description = document.querySelector('#add_modal [name="description"]').value;
 
@@ -205,17 +204,15 @@ export default function PastPeriods() {
                   });
 
                   if (response.ok) {
-                    // Handle successful addition, close modal, update state, etc.
                     window.add_modal.close();
-                    // Fetch and update the periods data after adding a new period
                     const dataResponse = await fetch('/api/periods/all-periods');
                     const data = await dataResponse.json();
                     setPeriods(data.periods);
                   } else {
-                    // Handle error response
+                    console.error(response.error)
                   }
                 } catch (error) {
-                  // Handle fetch error
+                  console.error(error);
                 }
               }}
             >
@@ -234,7 +231,7 @@ export default function PastPeriods() {
               type="date"
               name="startDate"
               className="input input-bordered w-full max-w-xs"
-              defaultValue={modalStartDate} // Use the state value
+              defaultValue={modalStartDate}
             />
           </div>
           <div>
@@ -243,7 +240,7 @@ export default function PastPeriods() {
               type="text"
               name="description"
               className="input input-bordered w-full max-w-xs"
-              defaultValue={modalDescription} // Use the state value
+              defaultValue={modalDescription}
             />
           </div>
           <div className="modal-action">
@@ -251,10 +248,9 @@ export default function PastPeriods() {
               Zamknij
             </button>
             <button
-              type="button"  // Set the button type to "button"
+              type="button"
               className="btn btn-info"
               onClick={async () => {
-                // Get the input values from the form
                 const startDate = document.querySelector('#edit_modal [name="startDate"]').value;
                 const description = document.querySelector('#edit_modal [name="description"]').value;
 
@@ -272,17 +268,15 @@ export default function PastPeriods() {
                   });
 
                   if (response.ok) {
-                    // Handle successful update, close modal, update state, etc.
                     window.edit_modal.close();
-                    // Fetch and update the periods data after editing a period
                     const dataResponse = await fetch('/api/periods/all-periods');
                     const data = await dataResponse.json();
                     setPeriods(data.periods);
                   } else {
-                    // Handle error response
+                    console.error(response.error)
                   }
                 } catch (error) {
-                  // Handle fetch error
+                  console.error(error);
                 }
               }}
             >
