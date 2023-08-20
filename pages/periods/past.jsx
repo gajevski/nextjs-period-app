@@ -1,17 +1,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-
-async function updatePeriods(setPeriods) {
-  const periods = await setPeriods();
-  setPeriods(periods.periods);
-}
-
 export default function PastPeriods() {
-  const [startDate, setStartDate] = useState("");
-  const [description, setDescription] = useState("");
   const [periods, setPeriods] = useState([]);
-  const [selectedPeriodId, setSelectedPeriodId] = useState(null);
+  const [modalPeriodId, setModalPeriodId] = useState(null);
+  const [modalStartDate, setModalStartDate] = useState("");
+  const [modalDescription, setModalDescription] = useState("");
 
   useEffect(() => {
     fetch('/api/periods/all-periods')
@@ -19,52 +13,6 @@ export default function PastPeriods() {
       .then(data => setPeriods(data.periods))
       .catch(error => console.error('Error fetching periods:', error));
   }, []);
-
-  const handleAddPeriod = async () => {
-    await fetch("http://localhost:3001/periods/add-period", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ startDate, description }),
-    });
-
-    setStartDate("");
-    setDescription("");
-    updatePeriods(setPeriods);
-  };
-
-  const handleDeletePeriod = async (id) => {
-    await fetch("http://localhost:3001/periods/delete-period", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    });
-
-    setStartDate("");
-    setDescription("");
-    updatePeriods(setPeriods);
-  };
-
-  const handleEditPeriod = async (id) => {
-    await fetch("http://localhost:3001/periods/edit-period", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        startDate,
-        description,
-      }),
-    });
-
-    setStartDate("");
-    setDescription("");
-    updatePeriods(setPeriods);
-  };
 
   return (
     <div>
@@ -106,7 +54,9 @@ export default function PastPeriods() {
               <button
                 className="btn btn-accent mr-2"
                 onClick={() => {
-                  setSelectedPeriodId(period.id);
+                  setModalPeriodId(period.id);
+                  setModalStartDate(period.startDate);
+                  setModalDescription(period.description);
                   window.edit_modal.showModal();
                 }}
               >
@@ -128,7 +78,6 @@ export default function PastPeriods() {
               </button>
               <button
                 className="btn btn-square btn-outline"
-                onClick={() => handleDeletePeriod(period.id)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -196,8 +145,6 @@ export default function PastPeriods() {
               type="date"
               placeholder="Wpisz tutaj..."
               className="input input-bordered w-full max-w-xs"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
             />
           </div>
           <div>
@@ -206,13 +153,11 @@ export default function PastPeriods() {
               type="text"
               placeholder="Wpisz tutaj..."
               className="input input-bordered w-full max-w-xs"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div className="modal-action">
             <button className="btn btn-outline">Zamknij</button>
-            <button className="btn btn-info" onClick={handleAddPeriod}>
+            <button className="btn btn-info">
               Dodaj
             </button>
           </div>
@@ -220,31 +165,63 @@ export default function PastPeriods() {
       </dialog>
 
       <dialog id="edit_modal" className="modal">
-        <form method="dialog" className="modal-box">
+        <form
+          method="dialog"
+          className="modal-box"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            // Get the input values from the form
+            const startDate = e.target.startDate.value;
+            const description = e.target.description.value;
+
+            try {
+              const response = await fetch('/api/periods/edit-period', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: modalPeriodId,
+                  startDate,
+                  description
+                })
+              });
+
+              if (response.ok) {
+                // Handle successful update, close modal, update state, etc.
+                window.edit_modal.close();
+              } else {
+                // Handle error response
+              }
+            } catch (error) {
+              // Handle fetch error
+            }
+          }}
+        >
           <h3 className="font-bold text-lg mb-6">Edytuj okres</h3>
           <div className="mb-4">
             <span className="label-text">Data rozpoczęcia</span>
             <input
               type="date"
-              placeholder="Wpisz tutaj..."
+              name="startDate"
+              defaultValue={modalStartDate} // Use the state value
               className="input input-bordered w-full max-w-xs"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
             />
           </div>
           <div>
             <span className="label-text">Opis</span>
             <input
               type="text"
-              placeholder="Wpisz tutaj..."
+              name="description"
+              defaultValue={modalDescription} // Use the state value
               className="input input-bordered w-full max-w-xs"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div className="modal-action">
-            <button className="btn btn-outline">Zamknij</button>
-            <button className="btn btn-info" onClick={() => handleEditPeriod(selectedPeriodId)}>
+            <button className="btn btn-outline" onClick={() => window.edit_modal.close()}>
+              Zamknij
+            </button>
+            <button type="submit" className="btn btn-info">
               Edytuj
             </button>
           </div>
