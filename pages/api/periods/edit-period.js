@@ -1,4 +1,3 @@
-
 import { periodsData } from "../../../shared/periods";
 
 export default function handler(req, res) {

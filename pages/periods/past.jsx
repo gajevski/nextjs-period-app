@@ -143,68 +143,7 @@ export default function PastPeriods() {
             <span className="label-text">Data rozpoczęcia</span>
             <input
               type="date"
-              placeholder="Wpisz tutaj..."
-              className="input input-bordered w-full max-w-xs"
-            />
-          </div>
-          <div>
-            <span className="label-text">Opis</span>
-            <input
-              type="text"
-              placeholder="Wpisz tutaj..."
-              className="input input-bordered w-full max-w-xs"
-            />
-          </div>
-          <div className="modal-action">
-            <button className="btn btn-outline">Zamknij</button>
-            <button className="btn btn-info">
-              Dodaj
-            </button>
-          </div>
-        </form>
-      </dialog>
-
-      <dialog id="edit_modal" className="modal">
-        <form
-          method="dialog"
-          className="modal-box"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            // Get the input values from the form
-            const startDate = e.target.startDate.value;
-            const description = e.target.description.value;
-
-            try {
-              const response = await fetch('/api/periods/edit-period', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  id: modalPeriodId,
-                  startDate,
-                  description
-                })
-              });
-
-              if (response.ok) {
-                // Handle successful update, close modal, update state, etc.
-                window.edit_modal.close();
-              } else {
-                // Handle error response
-              }
-            } catch (error) {
-              // Handle fetch error
-            }
-          }}
-        >
-          <h3 className="font-bold text-lg mb-6">Edytuj okres</h3>
-          <div className="mb-4">
-            <span className="label-text">Data rozpoczęcia</span>
-            <input
-              type="date"
               name="startDate"
-              defaultValue={modalStartDate} // Use the state value
               className="input input-bordered w-full max-w-xs"
             />
           </div>
@@ -213,15 +152,115 @@ export default function PastPeriods() {
             <input
               type="text"
               name="description"
-              defaultValue={modalDescription} // Use the state value
               className="input input-bordered w-full max-w-xs"
+            />
+          </div>
+          <div className="modal-action">
+            <button className="btn btn-outline" onClick={() => window.add_modal.close()}>
+              Zamknij
+            </button>
+            <button
+              type="button"  // Set the button type to "button"
+              className="btn btn-info"
+              onClick={async () => {
+                // Get the input values from the form
+                const startDate = document.querySelector('#add_modal [name="startDate"]').value;
+                const description = document.querySelector('#add_modal [name="description"]').value;
+
+                try {
+                  const response = await fetch('/api/periods/add-period', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      startDate,
+                      description
+                    })
+                  });
+
+                  if (response.ok) {
+                    // Handle successful addition, close modal, update state, etc.
+                    window.add_modal.close();
+                    // Fetch and update the periods data after adding a new period
+                    const dataResponse = await fetch('/api/periods/all-periods');
+                    const data = await dataResponse.json();
+                    setPeriods(data.periods);
+                  } else {
+                    // Handle error response
+                  }
+                } catch (error) {
+                  // Handle fetch error
+                }
+              }}
+            >
+              Dodaj
+            </button>
+          </div>
+        </form>
+      </dialog>
+
+      <dialog id="edit_modal" className="modal">
+        <form method="dialog" className="modal-box">
+          <h3 className="font-bold text-lg mb-6">Edytuj okres</h3>
+          <div className="mb-4">
+            <span className="label-text">Data rozpoczęcia</span>
+            <input
+              type="date"
+              name="startDate"
+              className="input input-bordered w-full max-w-xs"
+              defaultValue={modalStartDate} // Use the state value
+            />
+          </div>
+          <div>
+            <span className="label-text">Opis</span>
+            <input
+              type="text"
+              name="description"
+              className="input input-bordered w-full max-w-xs"
+              defaultValue={modalDescription} // Use the state value
             />
           </div>
           <div className="modal-action">
             <button className="btn btn-outline" onClick={() => window.edit_modal.close()}>
               Zamknij
             </button>
-            <button type="submit" className="btn btn-info">
+            <button
+              type="button"  // Set the button type to "button"
+              className="btn btn-info"
+              onClick={async () => {
+                // Get the input values from the form
+                const startDate = document.querySelector('#edit_modal [name="startDate"]').value;
+                const description = document.querySelector('#edit_modal [name="description"]').value;
+
+                try {
+                  const response = await fetch('/api/periods/edit-period', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      id: modalPeriodId,
+                      startDate,
+                      description
+                    })
+                  });
+
+                  if (response.ok) {
+                    // Handle successful update, close modal, update state, etc.
+                    window.edit_modal.close();
+                    // Fetch and update the periods data after editing a period
+                    const dataResponse = await fetch('/api/periods/all-periods');
+                    const data = await dataResponse.json();
+                    setPeriods(data.periods);
+                  } else {
+                    // Handle error response
+                  }
+                } catch (error) {
+                  // Handle fetch error
+                }
+              }}
+            >
               Edytuj
             </button>
           </div>
