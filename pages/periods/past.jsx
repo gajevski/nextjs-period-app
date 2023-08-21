@@ -35,24 +35,16 @@ export default function PastPeriods() {
         </svg>
       </button>
 
-      {periods.map((period, index) => (
-        <div
-          className={`p-3 collapse z-1 ${index === periods.length - 1 ? "mb-20" : ""
-            }`}
-          key={period.id}
-        >
-          <input type="checkbox" className="peer" />
-          <div className="collapse-title bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content">
-            {period.startDate}
-          </div>
-          <div className="collapse-content bg-primary text-primary-content peer-checked:bg-secondary peer-checked:text-secondary-content peer-checked:p-4 flex justify-between">
-            <div className="flex flex-col items-start justify-between">
-              <p>{period.startDate}</p>
-              <p>{period.description}</p>
-            </div>
-            <div className="flex">
+      {periods.reverse().map((period, index) => (
+        <div className="flex flex-col w-full lg:flex-row mb-4" key={period.id}>
+          <div className="grid m-4 p-2 flex-grow h-32 card bg-base-300 rounded-box">
+            <article className="prose lg:prose-xl">
+              <h3 className="px-5">Data okresu:</h3>
+              <p className="px-5">{period.startDate}</p>
+            </article>
+            <div className="card-actions justify-end">
               <button
-                className="btn btn-accent mr-2"
+                className="btn btn-xs btn-neutral mr-2"
                 onClick={() => {
                   setModalPeriodId(period.id);
                   setModalStartDate(period.startDate);
@@ -63,13 +55,13 @@ export default function PastPeriods() {
                 <svg
                   className="feather feather-edit"
                   fill="none"
-                  height="24"
+                  height="16"
+                  width="16"
                   stroke="currentColor"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
                   viewBox="0 0 24 24"
-                  width="24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -77,7 +69,7 @@ export default function PastPeriods() {
                 </svg>
               </button>
               <button
-                className="btn btn-square btn-outline"
+                className="btn btn-xs btn-square btn-outline"
                 onClick={async () => {
                   if (window.confirm("Na pewno chcesz usunąć ten okres?")) {
                     try {
@@ -106,7 +98,7 @@ export default function PastPeriods() {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
+                  className="h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -121,6 +113,8 @@ export default function PastPeriods() {
               </button>
             </div>
           </div>
+          <div className="divider lg:divider-horizontal">🩸</div>
+
         </div>
       ))}
 
