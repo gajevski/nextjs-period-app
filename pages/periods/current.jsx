@@ -15,14 +15,14 @@ export default function CurrentPeriod() {
   };
 
   useEffect(() => {
-    fetch('/api/periods/all-periods')
+    fetch('/api/periods/next-period')
       .then(response => response.json())
-      .then(data => setPeriods(data.periods))
+      .then(data => setPeriods(data))
       .catch(error => console.error('Error fetching periods:', error));
   }, []);
 
-  const lastPeriod = periods.find(period => period.id === 0);
-  const nextPeriod = periods.find(period => period.id === 1);
+  const lastPeriod = periods.lastPeriod;
+  const nextPeriod = periods.nextPeriod;
 
   const lastStartDate = lastPeriod ? new Date(lastPeriod.startDate) : null;
   const nextStartDate = nextPeriod ? new Date(nextPeriod.startDate) : null;
