@@ -31,24 +31,35 @@ export default function CurrentPeriod() {
     <div>
       <article className="prose lg:prose-xl">
         <h1 className="px-5 py-2">Najbliższy okres</h1>
-        <h2 className="px-5">Ostatni okres wypadł:</h2>
-        {lastStartDate && (
-          <h2 className="px-5">{lastStartDate.toLocaleDateString(undefined, options)}</h2>
-        )}
-        <h2 className="px-5 mt-16">Następny okres wypada:</h2>
-        {nextStartDate && (
-          <h2 className="px-5">{nextStartDate.toLocaleDateString(undefined, options)}</h2>
-          // <h2 className="px-5">
-          //   <DatePicker
-          //     selected={selectedDate || nextStartDate}
-          //     onChange={(date) => setSelectedDate(date)}
-          //     highlightDates={[nextStartDate]}
-          //     dateFormat="EEEE, MMMM d, yyyy"
-          //     locale={pl}
-          //   />
-          // </h2>
-        )}
       </article>
+      <div className="flex flex-col w-full lg:flex-row">
+        <div className="grid m-4 flex-grow h-32 card bg-base-300 rounded-box place-items-center">
+        <article className="prose lg:prose-xl">
+          <h3 className="px-5">Ostatni okres wypadł:</h3>
+          {lastStartDate && (
+            <p className="px-5">{lastStartDate.toLocaleDateString(undefined, options)}</p>
+          )}
+          </article>
+        </div>
+        <div className="divider lg:divider-horizontal">🩸</div>
+        <div className="grid m-4 flex-grow h-32 card bg-base-300 rounded-box place-items-center">
+        <article className="prose lg:prose-xl">
+          <h3 className="px-5">Następny okres wypada:</h3>
+          {nextStartDate && (
+            <p className="px-5">{nextStartDate.toLocaleDateString(undefined, options)}</p>
+            // <h2 className="px-5">
+            //   <DatePicker
+            //     selected={selectedDate || nextStartDate}
+            //     onChange={(date) => setSelectedDate(date)}
+            //     highlightDates={[nextStartDate]}
+            //     dateFormat="EEEE, MMMM d, yyyy"
+            //     locale={pl}
+            //   />
+            // </h2>
+          )}
+          </article>
+        </div>
+      </div>
       <div className="btm-nav">
         <button className="text-error active">
           <svg
