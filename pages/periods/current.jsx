@@ -1,12 +1,9 @@
 import Link from "next/link";
 import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
-import { pl } from 'date-fns/locale';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function CurrentPeriod() {
   const [periods, setPeriods] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
   const options = {
     weekday: 'long',
     year: 'numeric',
@@ -47,15 +44,6 @@ export default function CurrentPeriod() {
           <h3 className="px-5">Następny okres wypada:</h3>
           {nextStartDate && (
             <p className="px-5">{nextStartDate.toLocaleDateString(undefined, options)}</p>
-            // <h2 className="px-5">
-            //   <DatePicker
-            //     selected={selectedDate || nextStartDate}
-            //     onChange={(date) => setSelectedDate(date)}
-            //     highlightDates={[nextStartDate]}
-            //     dateFormat="EEEE, MMMM d, yyyy"
-            //     locale={pl}
-            //   />
-            // </h2>
           )}
           </article>
         </div>

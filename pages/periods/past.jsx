@@ -5,7 +5,13 @@ export default function PastPeriods() {
   const [periods, setPeriods] = useState([]);
   const [modalPeriodId, setModalPeriodId] = useState(null);
   const [modalStartDate, setModalStartDate] = useState("");
-  const [modalDescription, setModalDescription] = useState("");
+
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
 
   useEffect(() => {
     fetch('/api/periods/all-periods')
@@ -39,8 +45,8 @@ export default function PastPeriods() {
         <div className="flex flex-col w-full lg:flex-row mb-4" key={period.id}>
           <div className="grid m-4 p-2 flex-grow h-32 card bg-base-300 rounded-box">
             <article className="prose lg:prose-xl">
-              <h3 className="px-5">Data okresu:</h3>
-              <p className="px-5">{period.startDate}</p>
+              <h3 className="px-5">Początek okresu:</h3>
+              <p className="px-5">{new Date(period.startDate).toLocaleDateString(undefined, options)}</p>
             </article>
             <div className="card-actions justify-end">
               <button
@@ -48,7 +54,6 @@ export default function PastPeriods() {
                 onClick={() => {
                   setModalPeriodId(period.id);
                   setModalStartDate(period.startDate);
-                  setModalDescription(period.description);
                   window.edit_modal.showModal();
                 }}
               >
@@ -166,14 +171,6 @@ export default function PastPeriods() {
               className="input input-bordered w-full max-w-xs"
             />
           </div>
-          <div>
-            <span className="label-text">Opis</span>
-            <input
-              type="text"
-              name="description"
-              className="input input-bordered w-full max-w-xs"
-            />
-          </div>
           <div className="modal-action">
             <button className="btn btn-outline" onClick={() => window.add_modal.close()}>
               Zamknij
@@ -183,7 +180,6 @@ export default function PastPeriods() {
               className="btn btn-info"
               onClick={async () => {
                 const startDate = document.querySelector('#add_modal [name="startDate"]').value;
-                const description = document.querySelector('#add_modal [name="description"]').value;
 
                 try {
                   const response = await fetch('/api/periods/add-period', {
@@ -193,7 +189,6 @@ export default function PastPeriods() {
                     },
                     body: JSON.stringify({
                       startDate,
-                      description
                     })
                   });
 
@@ -228,15 +223,6 @@ export default function PastPeriods() {
               defaultValue={modalStartDate}
             />
           </div>
-          <div>
-            <span className="label-text">Opis</span>
-            <input
-              type="text"
-              name="description"
-              className="input input-bordered w-full max-w-xs"
-              defaultValue={modalDescription}
-            />
-          </div>
           <div className="modal-action">
             <button className="btn btn-outline" onClick={() => window.edit_modal.close()}>
               Zamknij
@@ -246,7 +232,6 @@ export default function PastPeriods() {
               className="btn btn-info"
               onClick={async () => {
                 const startDate = document.querySelector('#edit_modal [name="startDate"]').value;
-                const description = document.querySelector('#edit_modal [name="description"]').value;
 
                 try {
                   const response = await fetch('/api/periods/edit-period', {
@@ -257,7 +242,6 @@ export default function PastPeriods() {
                     body: JSON.stringify({
                       id: modalPeriodId,
                       startDate,
-                      description
                     })
                   });
 

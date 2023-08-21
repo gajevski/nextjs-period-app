@@ -5,14 +5,13 @@ function generateRandomId() {
 }
 
 export default function handler(req, res) {
-  const { startDate, description } = req.body;
+  const { startDate } = req.body;
 
   const newPeriodId = generateRandomId();
 
   const newPeriod = {
     id: newPeriodId,
     startDate,
-    description,
   };
 
   periodsData.push(newPeriod);
