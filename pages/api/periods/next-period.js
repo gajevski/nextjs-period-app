@@ -1,7 +1,10 @@
+import { periodsData } from "../../../shared/periods";
+
 const moment = require("moment");
 
 export default function handler(req, res) {
-    let lastPeriod = { id: 0, startDate: "2023-06-10", description: "Period one" };
+    const periods = periodsData;
+    let lastPeriod = periods[periods.length - 1];
 
     const lastStartDate = moment(lastPeriod.startDate);
     const nextStartDate = lastStartDate.clone().add(26, "days").format("YYYY-MM-DD");
