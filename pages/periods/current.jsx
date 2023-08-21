@@ -37,15 +37,16 @@ export default function CurrentPeriod() {
         )}
         <h2 className="px-5 mt-16">Następny okres wypada:</h2>
         {nextStartDate && (
-          <h2 className="px-5">
-            <DatePicker
-              selected={selectedDate || nextStartDate}
-              onChange={(date) => setSelectedDate(date)}
-              highlightDates={[nextStartDate]}
-              dateFormat="EEEE, MMMM d, yyyy"
-              locale={pl}
-            />
-          </h2>
+          <h2 className="px-5">{nextStartDate.toLocaleDateString(undefined, options)}</h2>
+          // <h2 className="px-5">
+          //   <DatePicker
+          //     selected={selectedDate || nextStartDate}
+          //     onChange={(date) => setSelectedDate(date)}
+          //     highlightDates={[nextStartDate]}
+          //     dateFormat="EEEE, MMMM d, yyyy"
+          //     locale={pl}
+          //   />
+          // </h2>
         )}
       </article>
       <div className="btm-nav">
