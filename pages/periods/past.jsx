@@ -26,7 +26,7 @@ export default function PastPeriods() {
         <h1 className="px-5 py-2">Poprzednie okresy</h1>
       </article>
       <button
-        className="plus-button btn btn-circle btn-error z-10 fixed bottom-24 right-4"
+        className="plus-button btn btn-circle btn-neutral z-10 fixed bottom-24 right-4"
         onClick={() => window.add_modal.showModal()}
       >
         <svg
@@ -177,7 +177,7 @@ export default function PastPeriods() {
             </button>
             <button
               type="button"
-              className="btn btn-info"
+              className="btn btn-neutral"
               onClick={async () => {
                 const startDate = document.querySelector('#add_modal [name="startDate"]').value;
 
@@ -229,7 +229,7 @@ export default function PastPeriods() {
             </button>
             <button
               type="button"
-              className="btn btn-info"
+              className="btn btn-neutral"
               onClick={async () => {
                 const startDate = document.querySelector('#edit_modal [name="startDate"]').value;
 
