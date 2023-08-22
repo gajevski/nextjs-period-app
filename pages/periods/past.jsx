@@ -1,10 +1,18 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const SkeletonPeriod = () => (
+  <div className="flex items-center justify-center m-4 h-32 card bg-base-300 rounded-box animate-pulse">
+    <article className="prose lg:prose-xl">
+    <span className="loading loading-ring loading-sm"></span>
+    </article>
+  </div>
+);
 export default function PastPeriods() {
   const [periods, setPeriods] = useState([]);
   const [modalPeriodId, setModalPeriodId] = useState(null);
   const [modalStartDate, setModalStartDate] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const options = {
     weekday: 'long',
@@ -16,8 +24,14 @@ export default function PastPeriods() {
   useEffect(() => {
     fetch('/api/periods/all-periods')
       .then(response => response.json())
-      .then(data => setPeriods(data.periods))
-      .catch(error => console.error('Error fetching periods:', error));
+      .then(data => {
+        setPeriods(data.periods)
+        setLoading(false);
+      })
+            .catch(error => {
+        console.error('Error fetching periods:', error);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -41,14 +55,19 @@ export default function PastPeriods() {
         </svg>
       </button>
 
-      {periods.reverse().map((period, index) => (
-        <div className="flex flex-col w-full lg:flex-row mb-4" key={period.id}>
-          <div className="grid m-4 p-2 flex-grow h-32 card bg-base-300 rounded-box">
-            <article className="prose lg:prose-xl">
-              <h3 className="px-5">Początek okresu:</h3>
-              <p className="px-5">{new Date(period.startDate).toLocaleDateString(undefined, options)}</p>
-            </article>
-            <div className="card-actions justify-end">
+      {loading ? (
+        <SkeletonPeriod />
+      ) : (
+        periods.reverse().map((period, index) => (
+          <div className="flex flex-col w-full lg:flex-row mb-4" key={period.id}>
+            <div className="grid m-4 p-2 flex-grow h-32 card bg-base-300 rounded-box">
+              <article className="prose lg:prose-xl">
+                <h3 className="px-5">Początek okresu:</h3>
+                <p className="px-5">
+                  {new Date(period.startDate).toLocaleDateString(undefined, options)}
+                </p>
+              </article>
+              <div className="card-actions justify-end">
               <button
                 className="btn btn-xs btn-neutral mr-2"
                 onClick={() => {
@@ -116,12 +135,12 @@ export default function PastPeriods() {
                   />
                 </svg>
               </button>
+              </div>
             </div>
+            <div className="divider lg:divider-horizontal">🩸</div>
           </div>
-          <div className="divider lg:divider-horizontal">🩸</div>
-
-        </div>
-      ))}
+        ))
+      )}
 
       <div className="btm-nav">
         <Link href="/periods/current">
