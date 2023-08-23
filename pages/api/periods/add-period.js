@@ -1,20 +1,27 @@
-import { periodsData } from "../../../shared/periods";
+import prisma from '../../../lib/prisma';
 
 function generateRandomId() {
-    return Math.floor(Math.random() * 1000);
+  return Math.floor(Math.random() * 1000);
 }
 
-export default function handler(req, res) {
-  const { startDate } = req.body;
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
 
+  const { startDate } = req.body;
   const newPeriodId = generateRandomId();
 
-  const newPeriod = {
-    id: newPeriodId,
-    startDate,
-  };
+  try {
+    const newPeriod = await prisma.period.create({
+      data: {
+        id: newPeriodId,
+        startDate,
+      },
+    });
 
-  periodsData.push(newPeriod);
-
-  res.status(201).json({ message: "Period added successfully.", period: newPeriod });
+    res.status(201).json({ message: 'Period added successfully.', period: newPeriod });
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding period.', error: error.message });
+  }
 }
