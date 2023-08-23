@@ -1,6 +1,7 @@
 import prisma from '../../../lib/prisma';
 
 export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', 'https://nextjs-period-app.vercel.app/')
   if (req.method !== 'PUT') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
