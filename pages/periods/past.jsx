@@ -255,7 +255,7 @@ export default function PastPeriods() {
 
                 try {
                   const response = await fetch('/api/periods/edit-period', {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                       'Content-Type': 'application/json'
                     },
