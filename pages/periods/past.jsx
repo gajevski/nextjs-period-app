@@ -8,6 +8,7 @@ const SkeletonPeriod = () => (
     </article>
   </div>
 );
+
 export default function PastPeriods() {
   const [periods, setPeriods] = useState([]);
   const [modalPeriodId, setModalPeriodId] = useState(null);

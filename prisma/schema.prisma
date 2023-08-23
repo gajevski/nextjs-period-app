@@ -12,5 +12,5 @@ datasource db {
 
 model Period {
   id        Int      @id
-  startDate DateTime
+  startDate String
 }

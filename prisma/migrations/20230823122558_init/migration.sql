@@ -1,0 +1,5 @@
+-- CreateTable
+CREATE TABLE "Period" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "startDate" DATETIME NOT NULL
+);
