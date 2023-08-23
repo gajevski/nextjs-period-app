@@ -7,7 +7,7 @@ export default function handler(req, res) {
 
   if (periodIndex !== -1) {
     periodsData.splice(periodIndex, 1);
-    res.status(200).json({ message: "Period removed successfully." });
+    res.status(200).json({ message: "Period removed." });
   } else {
     res.status(404).json({ message: "Period not found." });
   }
