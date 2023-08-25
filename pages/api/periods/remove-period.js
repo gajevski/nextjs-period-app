@@ -1,14 +1,26 @@
-import { periodsData } from "../../../shared/periods";
+import prisma from '../../../lib/prisma';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', 'https://nextjs-period-app.vercel.app/')
+  if (req.method !== 'DELETE') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+
   const { id } = req.body;
 
-  const periodIndex = periodsData.findIndex(period => period.id === id);
+  try {
+    const deletedPeriod = await prisma.period.delete({
+      where: {
+        id: id,
+      },
+    });
 
-  if (periodIndex !== -1) {
-    periodsData.splice(periodIndex, 1);
-    res.status(200).json({ message: "Period removed successfully." });
-  } else {
-    res.status(404).json({ message: "Period not found." });
+    if (deletedPeriod) {
+      res.status(200).json({ message: 'Period removed successfully.' });
+    } else {
+      res.status(404).json({ message: 'Period not found.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error removing period.', error: error.message });
   }
 }

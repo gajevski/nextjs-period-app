@@ -1,16 +1,29 @@
-import { periodsData } from "../../../shared/periods";
+import prisma from '../../../lib/prisma';
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', 'https://nextjs-period-app.vercel.app/')
+  if (req.method !== 'PUT') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+
   const { id, startDate } = req.body;
-  const periodIndex = periodsData.findIndex(period => period.id === id);
 
-  if (periodIndex !== -1) {
-    periodsData[periodIndex] = {
-      id,
-      startDate,
-    };
-    res.status(200).json({ message: "Period updated successfully." });
-  } else {
-    res.status(404).json({ message: "Period not found." });
+  try {
+    const updatedPeriod = await prisma.period.update({
+      where: {
+        id: id,
+      },
+      data: {
+        startDate: startDate,
+      },
+    });
+
+    if (updatedPeriod) {
+      res.status(200).json({ message: 'Period updated successfully.' });
+    } else {
+      res.status(404).json({ message: 'Period not found.' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating period.', error: error.message });
   }
 }
