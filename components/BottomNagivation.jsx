@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-export default function BottomNavigation({ currentUrl, redirectTo }) {
+export default function BottomNavigation() {
     return (
         <div className="btm-nav">
-            <Link href={redirectTo}>
+            <Link href="/periods/current">
                 <button className="text-error">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -21,22 +21,24 @@ export default function BottomNavigation({ currentUrl, redirectTo }) {
                     </svg>
                 </button>
             </Link>
-            <button className="text-error active">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                </svg>
-            </button>
+            <Link href="/periods/past">
+                <button className="text-error active">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                    </svg>
+                </button>
+            </Link>
         </div>
     );
 }
