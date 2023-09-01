@@ -15,3 +15,9 @@ model Period {
   id        Int      @id
   startDate String
 }
+
+model User {
+  id       Int      @id
+  name     String
+  password String
+}
