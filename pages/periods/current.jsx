@@ -13,6 +13,8 @@ const SkeletonPeriod = () => (
 export default function CurrentPeriod() {
   const [periods, setPeriods] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showFuturePeriods, setShowFuturePeriods] = useState(false);
+  const [futurePeriods, setFuturePeriods] = useState([]);
 
   const options = {
     weekday: 'long',
@@ -39,6 +41,29 @@ export default function CurrentPeriod() {
 
   const lastStartDate = lastPeriod ? new Date(lastPeriod.startDate) : null;
   const nextStartDate = nextPeriod ? new Date(nextPeriod.startDate) : null;
+
+  const calculateFuturePeriods = () => {
+    if (!nextStartDate) return [];
+    
+    const periods = [];
+    let currentDate = new Date(nextStartDate);
+    
+    for (let i = 0; i < 6; i++) {
+      currentDate = new Date(currentDate.getTime() + (26 * 24 * 60 * 60 * 1000));
+      periods.push({
+        startDate: currentDate,
+        predictedDate: true
+      });
+    }
+    
+    return periods;
+  };
+
+  const handleShowFuturePeriods = () => {
+    const calculatedPeriods = calculateFuturePeriods();
+    setFuturePeriods(calculatedPeriods);
+    setShowFuturePeriods(!showFuturePeriods);
+  };
 
   return (
     <div>
@@ -74,6 +99,31 @@ export default function CurrentPeriod() {
           </>
         )}
       </div>
+
+      <div className="flex justify-center m-4">
+        <button 
+          className="btn btn-primary"
+          onClick={handleShowFuturePeriods}
+        >
+          {showFuturePeriods ? 'Ukryj przyszłe okresy' : 'Pokaż przyszłe okresy'}
+        </button>
+      </div>
+
+      {showFuturePeriods && (
+        <div className="flex flex-col gap-4 m-4 pb-16">
+          <article className="prose lg:prose-xl">
+            <h2>Przewidywane przyszłe okresy:</h2>
+          </article>
+          {futurePeriods.map((period, index) => (
+            <div key={index} className="card bg-base-300 rounded-box p-4">
+              <article className="prose lg:prose-xl">
+                <h3>Okres {index + 1}:</h3>
+                <p>{period.startDate.toLocaleDateString(undefined, options)}</p>
+              </article>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="btm-nav">
         <button className="text-error active">
